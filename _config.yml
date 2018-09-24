@@ -8,7 +8,7 @@ subtitle:
 description:
 keywords:
 author: totoSalad
-language:
+language: zh-tw
 timezone:
 
 # URL
@@ -35,7 +35,7 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: minos
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -81,3 +81,36 @@ deploy:
   type: git
   repository: https://github.com/totoSalad/totoSalad.github.io.git
   branch: master
+
+menu:
+  Archives: /archives
+  Lifestyle: /categories/LifeStyle
+  
+search:
+  type: insight
+
+# Comment plugin settings.
+comment:
+  type: disqus
+  shortname: chats
+  
+# Additional navigation bar links on the right.
+# Links can either be text or icon. The following link is set to be an icon link whose icon
+# is set to the class name of a FontAwesome 5 icon. The `footer_links` below also gives an
+# example of setting plain text links.
+navbar_links:
+  GitHub:
+    icon: fab fa-github
+    url: https://github.com/totoSalad
+
+# Links at the bottom of the page.
+footer_links:
+  GitHub: https://github.com/totoSalad
+  
+article:
+  # Show word count and estimated reading time.
+  readtime: true
+  # Code highlight theme, please see https://highlightjs.org/static/demo/
+  highlight: atom-one-light
+
+
