@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>react-router 背后的故事 - totoSalad&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+
+</head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                <img src="/images/logo.png" alt="" height="28">
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/LifeStyle">Lifestyle</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Buscar" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/totoSalad">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            react-router 背后的故事
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-04-07T09:58:49.000Z" itemprop="datePublished">4月 7 2019</time>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            3 分钟 de lectura (Alrededor de 513 palabras)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="底层实现-——-history"><a href="#底层实现-——-history" class="headerlink" title="底层实现 —— history"></a>底层实现 —— history</h2><a id="more"></a>
+<blockquote>
+<p>本节内容转载自<br>作者：zhenhua-lee<br>链接：<a href="https://juejin.im/post/5b797c52e51d4538db349b05" target="_blank" rel="noopener">https://juejin.im/post/5b797c52e51d4538db349b05</a></p>
+</blockquote>
+<p><code>history</code> 是一个独立的第三方js库，可以用来兼容在不同浏览器、不同环境下对历史记录的管理，拥有统一的API。具体来说里面的history分为三类:</p>
+<ul>
+<li>老浏览器的history: 主要通过hash来实现，对应 createHashHistory</li>
+<li>高版本浏览器: 通过 html5 里面的 history，对应 createBrowserHistory</li>
+<li>node 环境下: 主要存储在 memeory 里面，对应 createMemoryHistory （木有什么接触，不扩展介绍）</li>
+</ul>
+<h3 id="URL-前进"><a href="#URL-前进" class="headerlink" title="URL 前进"></a>URL 前进</h3><ul>
+<li>createBrowserHistory: pushState、replaceState</li>
+<li>createHashHistory: location.hash=***、location.replace()</li>
+</ul>
+<h3 id="检测URL回退"><a href="#检测URL回退" class="headerlink" title="检测URL回退"></a>检测URL回退</h3><ul>
+<li>createBrowserHistory: popstate</li>
+<li>createHashHistory: hashchange</li>
+</ul>
+<h3 id="state-值存储在-sessionStorage-里"><a href="#state-值存储在-sessionStorage-里" class="headerlink" title="state 值存储在 sessionStorage 里"></a>state 值存储在 sessionStorage 里</h3><h2 id="rr4-的实现"><a href="#rr4-的实现" class="headerlink" title="rr4 的实现"></a>rr4 的实现</h2><img src="/2019/04/07/react-router-背后的故事/rrworkflow.png" title="quote from http://www.thisgirlcan.co.uk/activities/rrworkflow.png">
+<p><code>Router</code> 监听 history 的变化，并且通过 <code>state</code> 影响子组件的变化。<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.unlisten = props.history.listen(location =&gt; &#123;</span><br><span class="line">  if (this._isMounted) &#123;</span><br><span class="line">    this.setState(&#123; location &#125;);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    this._pendingLocation = location;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="路由匹配"><a href="#路由匹配" class="headerlink" title="路由匹配"></a>路由匹配</h2><p>在之前的版本中，在 Route 中写入的 <code>path</code>，在路由匹配时是独一无二的，而 v4 版本则有了一个包含的关系：如匹配 <code>path=&quot;/users&quot;</code> 的路由会匹配  <code>path=&quot;/&quot;</code> 的路由，在页面中这两个模块会同时进行渲染。</p>
+<p>如果只想匹配一个路由的话，则需要 <code>&lt;Switch/&gt;</code> 。v4这个改造与其 <strong>router即组件</strong> 的思路有一定关系， 多个 match 的组件会对一个 url 进行响应，<code>&lt;Switch/&gt;</code> 就是个用户定制的条件。</p>
+<p>在 <code>matchPath</code> 函数中使用了 <code>&quot;path-to-regexp&quot;</code> 来匹配 <code>restful</code> 接口，写法较为优雅。</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// </span></span><br><span class="line"><span class="hljs-keyword">const</span> compilePath = <span class="hljs-function">(<span class="hljs-params">path, options</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> keys = [];</span><br><span class="line">  <span class="hljs-keyword">const</span> regexp = pathToRegexp(path, keys, options);</span><br><span class="line">  <span class="hljs-keyword">return</span> &#123; regexp, keys &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> &#123; regexp, keys &#125; = compilePath(path, &#123;</span><br><span class="line">  end: exact,</span><br><span class="line">  strict,</span><br><span class="line">  sensitive</span><br><span class="line">&#125;);</span><br><span class="line"><span class="hljs-keyword">const</span> match = regexp.exec(pathname); <span class="hljs-comment">// 正则匹配</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> (!match) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> isExact = pathname === url; <span class="hljs-comment">// 是否精准匹配</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://juejin.im/post/5b797c52e51d4538db349b05" target="_blank" rel="noopener">React-Router底层原理分析与实现</a></li>
+<li><a href="http://zhenhua-lee.github.io/react/history.html" target="_blank" rel="noopener">react-router的实现原理</a></li>
+<li><a href="https://www.jianshu.com/p/bf6b45ce5bcc" target="_blank" rel="noopener">react-router 4 升级</a></li>
+</ul>
+
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2018/09/22/命名规范/">命名规范</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comentarios</h3>
+    
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2019/04/07/react-router-背后的故事/';
+        this.page.identifier = '2019/04/07/react-router-背后的故事/';
+        
+        this.language = 'zh';
+        
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'chats' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow">
+                <p>  &copy; 2019 totoSalad&nbsp;
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                          href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
+                <p>Logo by：<a href="https://www.designevo.com/cn/" title="免费在线logo制作软件">DesignEvo</a>设计制作</p>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/totoSalad">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+
+<script src="/js/script.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Escribe algo..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Páginas',
+                CATEGORIES: 'Categorías',
+                TAGS: 'Tags',
+                UNTITLED: '(Sin título)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+</body>
+</html>
