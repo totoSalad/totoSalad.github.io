@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>响应式编程 - totoSalad&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+
+</head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                <img src="/images/logo.png" alt height="28">
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item " href="/archives">Archives</a>
+            
+            <a class="navbar-item " href="/categories/LifeStyle">Lifestyle</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/totoSalad">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            响应式编程
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-11-28T14:34:29.000Z" itemprop="datePublished">11月 28 2019</time>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            12 分钟 read (About 1731 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="什么是响应式编程"><a href="#什么是响应式编程" class="headerlink" title="什么是响应式编程"></a>什么是响应式编程</h2><blockquote>
+<p>reactive programming is a declarative programming paradigm concerned with data streams and the propagation of change.<br>—- wikipedia</p>
+</blockquote>
+<a id="more"></a>
+<p>反应式编程是与<code>数据流</code>和<code>传播变化</code>有关的编程模式。目前市面比较流行的库有 <code>backbone.js</code> ， <code>rxjs</code></p>
+<p>喵喵喵？听着似乎与泛滥的 <code>MV*</code> 并无区别。</p>
+<p><img src="https://pic4.zhimg.com/v2-0d56e53597d2b55163688fd548b71e37.jpg" alt="不明所以"></p>
+<p><code>André Staltz</code> 浏览了很多关于 <code>响应式编程</code> 的书籍与和实践之后，给出了以下两个特征。</p>
+<ol>
+<li>anything can be a stream。</li>
+<li>丰富的处理流函数</li>
+</ol>
+<h3 id="anything-can-be-a-stream"><a href="#anything-can-be-a-stream" class="headerlink" title="anything can be a stream"></a>anything can be a stream</h3><p><code>asynchronous event stream</code> 在通用场景中是可以通过回调处理副作用的事件流，比如 <code>onClick</code> 等 dom 事件，类似<code>发布订阅</code>自定义事件。<br>响应式编程中可以发布 <code>数据</code>, <code>用户输入</code>, <code>属性</code>，任何操作和数据都可以是 <code>event stream</code>.</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> observable = Rx.observable.create(<span class="hljs-function"><span class="hljs-params">observer</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'start executing'</span>);</span><br><span class="line">    observer.next(<span class="hljs-string">'hello world'</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">observable.subscribe(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(value)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="hljs-comment">// 输出: </span></span><br><span class="line"><span class="hljs-comment">// start executing </span></span><br><span class="line"><span class="hljs-comment">// hello world</span></span><br></pre></td></tr></table></figure>
+<h4 id="stream-是啥？"><a href="#stream-是啥？" class="headerlink" title="stream 是啥？"></a>stream 是啥？</h4><p>Stream 是一组执行中的事件，可以分发三种内容：value / error /  “completed” 标志。分发的内容可以被监听 (subscribe) ，类似发布订阅的模式。</p>
+<h5 id="demo-stream-状态"><a href="#demo-stream-状态" class="headerlink" title="demo: stream 状态"></a>demo: stream 状态</h5><p>以 <code>click button</code> 为例:</p>
+<p><img src="https://camo.githubusercontent.com/36c0a9ffd8ed22236bd6237d44a1d3eecbaec336/687474703a2f2f692e696d6775722e636f6d2f634c344d4f73532e706e67" alt="Click event stream"></p>
+<p>ASCII 展示:</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--a---b-c---d---X---|-&gt;</span><br><span class="line"></span><br><span class="line">a, b, c, d are emitted values</span><br><span class="line">X is an error</span><br><span class="line">| is the &apos;completed&apos; signal</span><br><span class="line">---&gt; is the timeline</span><br></pre></td></tr></table></figure>
+<h5 id="demo-stream-监听"><a href="#demo-stream-监听" class="headerlink" title="demo: stream 监听"></a>demo: stream 监听</h5><p>通过 subscribe 监听事件。<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const observable = Rx.observable.fromEvent(button, &apos;click&apos;)</span><br><span class="line">  .map(event =&gt; event.clientX);</span><br><span class="line">observable.subscribe(value =&gt; &#123;console.log(value)&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="丰富的处理流函数"><a href="#丰富的处理流函数" class="headerlink" title="丰富的处理流函数"></a>丰富的处理流函数</h3><ul>
+<li>merge: 合并多个 stream </li>
+<li>buffer：缓存 stream，直到 stream emit</li>
+<li>filter : 类似数组的 filter，返回一组新 stream</li>
+<li>map : 类似数组的 map，返回一组新 stream</li>
+</ul>
+<p>假设我们希望得到  “double click” 流，并且允许短时的多次点击也等同于 “double click”。</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> singleClickStream = clickStream</span><br><span class="line">    .buffer(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123; <span class="hljs-keyword">return</span> clickStream.throttle(<span class="hljs-number">250</span>); &#125;)</span><br><span class="line">    .map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list</span>) </span>&#123; <span class="hljs-keyword">return</span> list.length; &#125;)</span><br><span class="line">    .filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>) </span>&#123; <span class="hljs-keyword">return</span> x === <span class="hljs-number">1</span>; &#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="https://camo.githubusercontent.com/995c301de2f566db10748042a5a67cc5d9ac45d9/687474703a2f2f692e696d6775722e636f6d2f484d47574e4f352e706e67" alt="Multiple clicks stream"></p>
+<h2 id="why-use-it"><a href="#why-use-it" class="headerlink" title="why use it?"></a>why use it?</h2><p>与 redux，mobx 相比</p>
+<ol>
+<li>便于处理多个异步事件，相比 Promise 可以有多个返回值，以及可以进行更复杂的处理。</li>
+<li>事件（异步、同步）处理标准化。</li>
+</ol>
+<p>对应中后台的场景：</p>
+<ol>
+<li>控制多个异步行为，尤其是异步行为存在依赖关系</li>
+<li>dashboard 在不同情况下需要更新不同的组件</li>
+</ol>
+<h2 id="rxjs"><a href="#rxjs" class="headerlink" title="rxjs"></a>rxjs</h2><p>rxjs 是最流行的响应式库之一，我们以之为例来展示响应式编程是如何应用的。</p>
+<ul>
+<li><strong>Observable可观察对象</strong>：可观察对象是数据流的源头，可以来自事件，网络，也可以自定义数据流。</li>
+<li><strong>Observer观察者</strong>：通过订阅可观察对象，即可获得观察者，观察者拦截处理数据流，可以视为数据流的终点</li>
+<li><strong>Operator操作符</strong>：操作符主要用于数据流的转换操作</li>
+<li><strong>Subject主题</strong>：集Observable和Observer的特点于一身，还可以用于广播事件流</li>
+<li><strong>Sheduler调度者</strong>：控制事件流的并发</li>
+</ul>
+<h3 id="show-me-some-code"><a href="#show-me-some-code" class="headerlink" title="show me some code!"></a>show me some code!</h3><p>下图是一个常见的搜索框，可以选择排序方式：热度(popularity) / 日期(date) 。如果搜索字段发生变更，或者排序方式变化则重新发起请求。</p>
+<p><img src="/Users/cukunbu/Desktop/rxjs.png" alt="rxjs"></p>
+<p><a href="https://codesandbox.io/s/rxjs-gby26" target="_blank" rel="noopener">完整代码</a></p>
+<h4 id="react-非-rxjs"><a href="#react-非-rxjs" class="headerlink" title="react + 非 rxjs"></a>react + 非 rxjs</h4><p>我们按照 Contianer / Present 组件的方式构建代码。Contianer 组件把搜索相关的字段（query / subject）都放在 state 中保存，同时暴露了修改 state 方法。</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> SmartWrapper = <span class="hljs-function"><span class="hljs-params">Component</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">this</span>.state = &#123;</span><br><span class="line">      query: <span class="hljs-string">"react"</span>,</span><br><span class="line">      subject: SUBJECT.POPULARITY,</span><br><span class="line">      stories: []</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    onSelectSubject = <span class="hljs-function"><span class="hljs-params">subject</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="hljs-keyword">this</span>.setState(&#123; subject &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">    onChangeQuery = <span class="hljs-function"><span class="hljs-params">query</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="hljs-keyword">if</span> (query) &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.setState(&#123; query &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// debounce 操作</span></span><br><span class="line">    debouncdFetch = debounce(<span class="hljs-function">(<span class="hljs-params">&#123; subject, query &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="hljs-keyword">return</span> mockData(<span class="hljs-string">`http://hn.algolia.com/api/v1/<span class="hljs-subst">$&#123;subject&#125;</span>?query=<span class="hljs-subst">$&#123;query&#125;</span>`</span>)</span><br><span class="line">        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> result.data.hits)</span><br><span class="line">        .then(<span class="hljs-function"><span class="hljs-params">stories</span> =&gt;</span> <span class="hljs-keyword">this</span>.setState(&#123; stories &#125;));</span><br><span class="line">    &#125;, <span class="hljs-number">1000</span>);</span><br><span class="line"></span><br><span class="line">    componentDidUpdate(prevProps, prevState) &#123;</span><br><span class="line">      <span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">query</span>: preQuery, <span class="hljs-attr">subject</span>: preSubject &#125; = prevState;</span><br><span class="line">      <span class="hljs-keyword">const</span> &#123; query, subject &#125; = <span class="hljs-keyword">this</span>.state;</span><br><span class="line">      <span class="hljs-keyword">if</span> (preQuery !== query || preSubject !== subject) &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.debouncdFetch(&#123; query, subject &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">      <span class="hljs-keyword">const</span> triggers = &#123;</span><br><span class="line">        onSelectSubject: <span class="hljs-keyword">this</span>.onSelectSubject,</span><br><span class="line">        onChangeQuery: <span class="hljs-keyword">this</span>.onChangeQuery</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="hljs-keyword">return</span> &lt;Component &#123;...this.props&#125; &#123;...this.state&#125; &#123;...triggers&#125; /&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default SmartWrapper(App);</span><br></pre></td></tr></table></figure>
+<h4 id="react-rxjs"><a href="#react-rxjs" class="headerlink" title="react + rxjs"></a>react + rxjs</h4><h5 id="Observable-观察内容"><a href="#Observable-观察内容" class="headerlink" title="Observable 观察内容"></a>Observable 观察内容</h5><p>rxjs Observable 实质是 stream，我们可以把数据当做一种 stream .</p>
+<p>BehaviorSubject 是一种 Oberservale, 即当前值就是观察项。如果值发生变化则会通知订阅者。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import &#123;BehaviorSubject&#125; from &apos;rxjs&apos; </span><br><span class="line">const query$ = new BehaviorSubject(&quot;react&quot;);  // 搜索内容</span><br><span class="line">const subject$ = new BehaviorSubject(SUBJECT.POPULARITY);  // 排序方式</span><br></pre></td></tr></table></figure>
+<p>功能上 <code>query$</code> 或 <code>subject$</code> 发生变化会触发 <code>fetch</code> 行为。我们也可以把<code>query$</code> 和 <code>subject$</code> 的变化合成一个 Observable, Observable 的返回异步行为(fetch stories）</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 因为</span></span><br><span class="line"><span class="hljs-comment">// 1. 输入时不搜索(debounce)</span></span><br><span class="line"><span class="hljs-comment">// 2. text为空时不搜索</span></span><br><span class="line"><span class="hljs-keyword">const</span> queryForFetch$ = query$.pipe(</span><br><span class="line">  debounce(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> timer(<span class="hljs-number">1000</span>)),</span><br><span class="line">  filter(<span class="hljs-function"><span class="hljs-params">query</span> =&gt;</span> query !== <span class="hljs-string">""</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> fetch$ = combineLatest(subject$, queryForFetch$).pipe(</span><br><span class="line">  flatMap(<span class="hljs-function">(<span class="hljs-params">[subject, query]</span>) =&gt;</span></span><br><span class="line">    mockData(<span class="hljs-string">`http://hn.algolia.com/api/v1/<span class="hljs-subst">$&#123;subject&#125;</span>?query=<span class="hljs-subst">$&#123;query&#125;</span>`</span>)</span><br><span class="line">  ),</span><br><span class="line">  map(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> result.data.hits)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="Observable-变化函数-trigger"><a href="#Observable-变化函数-trigger" class="headerlink" title="Observable 变化函数 trigger"></a>Observable 变化函数 trigger</h5><p><code>Observable.next</code> 可以发送值给观察者。</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> onSelectSubject = <span class="hljs-function"><span class="hljs-params">subject</span> =&gt;</span> subject$.next(subject),</span><br><span class="line"><span class="hljs-keyword">const</span> onChangeQuery = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> query$.next(value)</span><br></pre></td></tr></table></figure>
+<h5 id="react-订阅-Observable"><a href="#react-订阅-Observable" class="headerlink" title="react 订阅 Observable"></a>react 订阅 Observable</h5><p>rxjs <code>subscribe</code> 可以订阅 <code>Observable</code> 的变化，进行副作用操作。</p>
+<p>与非 rxjs 的实现相同，我们会把 <code>Observable</code> 都在 state 中储存。如果 <code>Observable</code> 发生变化需要触发 <code>setState</code>, 通知 react 发生更新。因为这部分行为具有一定的通用性，所以我们把它放在 HOC 中处理。</p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// withObservableStream.js</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (observable, triggers, initialState) =&gt; <span class="hljs-function"><span class="hljs-params">Component</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">constructor</span>(props) &#123;</span><br><span class="line">      <span class="hljs-keyword">super</span>(props);</span><br><span class="line"></span><br><span class="line">      <span class="hljs-keyword">this</span>.state = &#123;</span><br><span class="line">        ...initialState,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentDidMount() &#123;</span><br><span class="line">      <span class="hljs-keyword">this</span>.subscription = observable.subscribe(<span class="hljs-function"><span class="hljs-params">newState</span> =&gt;</span></span><br><span class="line">        <span class="hljs-keyword">this</span>.setState(&#123; ...newState &#125;),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentWillUnmount() &#123;</span><br><span class="line">      <span class="hljs-keyword">this</span>.subscription.unsubscribe();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">      <span class="hljs-keyword">return</span> (</span><br><span class="line">        &lt;Component &#123;...this.props&#125; &#123;...this.state&#125; &#123;...triggers&#125; /&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h5 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h5><figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> query$ = <span class="hljs-keyword">new</span> BehaviorSubject(<span class="hljs-string">"react"</span>);</span><br><span class="line"><span class="hljs-keyword">const</span> subject$ = <span class="hljs-keyword">new</span> BehaviorSubject(SUBJECT.POPULARITY);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 1. 输入时不搜索(debounce)</span></span><br><span class="line"><span class="hljs-comment">// 2. text为空时不搜索</span></span><br><span class="line"><span class="hljs-keyword">const</span> queryForFetch$ = query$.pipe(</span><br><span class="line">  debounce(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> timer(<span class="hljs-number">1000</span>)),</span><br><span class="line">  filter(<span class="hljs-function"><span class="hljs-params">query</span> =&gt;</span> query !== <span class="hljs-string">""</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// combineLatest：合并两个流为新流，并取两个流最近值</span></span><br><span class="line"><span class="hljs-keyword">const</span> fetch$ = combineLatest(subject$, queryForFetch$).pipe(</span><br><span class="line">  flatMap(<span class="hljs-function">(<span class="hljs-params">[subject, query]</span>) =&gt;</span></span><br><span class="line">    mockData(<span class="hljs-string">`http://hn.algolia.com/api/v1/<span class="hljs-subst">$&#123;subject&#125;</span>?query=<span class="hljs-subst">$&#123;query&#125;</span>`</span>)</span><br><span class="line">  ),</span><br><span class="line">  map(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> result.data.hits)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> withObservableStream(</span><br><span class="line">  combineLatest(subject$, query$, fetch$, (subject, query, stories) =&gt; (&#123;</span><br><span class="line">    subject,</span><br><span class="line">    query,</span><br><span class="line">    stories</span><br><span class="line">  &#125;)),</span><br><span class="line">  &#123;</span><br><span class="line">    onSelectSubject: <span class="hljs-function"><span class="hljs-params">subject</span> =&gt;</span> subject$.next(subject),</span><br><span class="line">    onChangeQuery: <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> query$.next(value)</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    query: <span class="hljs-string">"react"</span>,</span><br><span class="line">    subject: SUBJECT.POPULARITY,</span><br><span class="line">    stories: []</span><br><span class="line">  &#125;</span><br><span class="line">)(App);</span><br></pre></td></tr></table></figure>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>这两段代码相比 rxjs 版的业务逻辑更加精简，清晰，可以很好地与 UI 分离。但是 rxjs 复杂度更高，理解与学习成本高。<br>rxjs 可以与 state 一起管理数据，除此之外还可以与 redux 一起配合（<code>redux-observable</code>）在 Redux 中使用到 RxJS 所提供的函数响应式编程（FRP）的能力。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>Rxjs 有以下两个优点<br>1、 Observale 的形态是流，扩展方便。<br>2、异步事件标准化</p>
+<p>因为这两个优点，rxjs 十分适用于需要一定扩展度的公共组件。会尝试使用 rxjs 在 papaya-ui 中，解决固定场景的数据管理问题，比如 Dashboard 或者 search box + table 的场景。 </p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><p><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754" target="_blank" rel="noopener">https://gist.github.com/staltz/868e7e9bc2a7b8c1f754</a><br><a href="https://zhuanlan.zhihu.com/p/31623736" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/31623736</a><br><a href="https://www.robinwieruch.de/react-rxjs-state-management-tutorial" target="_blank" rel="noopener">https://www.robinwieruch.de/react-rxjs-state-management-tutorial</a><br><a href="http://www.alloyteam.com/2016/12/learn-rxjs/" target="_blank" rel="noopener">http://www.alloyteam.com/2016/12/learn-rxjs/</a><br><a href="https://juejin.im/post/5b798501f265da43473130a1" target="_blank" rel="noopener">https://juejin.im/post/5b798501f265da43473130a1</a></p>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/响应式编程-rxjs/">#响应式编程 rxjs</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2019/11/28/如何优雅使用-hooks/">如何优雅使用 hooks</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2019/11/28/响应式编程/';
+        this.page.identifier = '2019/11/28/响应式编程/';
+        
+        this.language = 'zh';
+        
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'chats' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow">
+                <p>  &copy; 2019 totoSalad&nbsp;
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
+                <p>Logo by：<a href="https://www.designevo.com/cn/" title="免费在线logo制作软件">DesignEvo</a>设计制作</p>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/totoSalad">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+
+<script src="/js/script.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+</body>
+</html>

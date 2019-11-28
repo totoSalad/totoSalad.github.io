@@ -95,7 +95,7 @@
         <span class="column is-narrow">
             
             
-            15 分钟 read (About 2275 words)
+            15 分钟 read (About 2279 words)
         </span>
         
     </div>
@@ -134,7 +134,7 @@
 </li>
 </ul>
 <p>所以在 <code>react</code> 中使用 <code>setInterval</code>，并且 <code>delay</code> 发生变化。class 的处理非常复杂，需要手动反复挂载 <code>setInterval</code> 事件。完整对比，<a href="https://overreacted.io/zh-hans/making-setinterval-declarative-with-react-hooks" target="_blank" rel="noopener">请点击</a></p>
-<p><img src="/Users/cukunbu/Library/Application Support/typora-user-images/image-20190804111610723.png" alt="image-20190804111610723"></p>
+<img src="/2019/11/28/如何优雅使用-hooks/hooks-image1.png" title="quote from http://www.thisgirlcan.co.uk/activities/hooks-image1/">
 <p>而 hooks 因为函数式组件会重新执行，则不需要手动挂载。</p>
 <figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Counter</span>(<span class="hljs-params">props</span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>);</span><br><span class="line">  <span class="hljs-keyword">const</span> savedCallback = useRef();</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 每次更新组件，callback 重新生成，与不同的 count 绑定。</span></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">    setCount(count + <span class="hljs-number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 每次更新时同步 callback 函数，避免 stale state 问题。</span></span><br><span class="line">  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    savedCallback.current = callback;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// delay 更新时，更新 setInterval 函数。</span></span><br><span class="line">  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tick</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">      savedCallback.current();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">let</span> id = setInterval(tick, <span class="hljs-number">1000</span>);</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> clearInterval(id); <span class="hljs-comment">// componentDidUpdate 与 unmount 的情况下销毁现有 interval.</span></span><br><span class="line">  &#125;, [props.delay]);</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -207,7 +207,9 @@
     
     
     <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2019/11/28/响应式编程/">响应式编程</a>
             
         </span>
         <span class="column is-12-mobile is-half-desktop  article-nav-next">
