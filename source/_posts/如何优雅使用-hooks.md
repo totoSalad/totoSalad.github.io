@@ -135,7 +135,7 @@ setInterval(tick, delay);
 
 所以在 `react` 中使用 `setInterval`，并且 `delay` 发生变化。class 的处理非常复杂，需要手动反复挂载 `setInterval` 事件。完整对比，[请点击](https://overreacted.io/zh-hans/making-setinterval-declarative-with-react-hooks)
 
-![image-20190804111610723](/Users/cukunbu/Library/Application Support/typora-user-images/image-20190804111610723.png)
+{% asset_img hooks-image1.png quote from http://www.thisgirlcan.co.uk/activities/hooks-image1/ %}
 
 而 hooks 因为函数式组件会重新执行，则不需要手动挂载。
 
