@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
 <title>react-router 背后的故事 - totoSalad&#39;s blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -41,7 +41,7 @@
         <div class="navbar-brand">
             <a class="navbar-item navbar-logo" href="/">
                 
-                <img src="/images/logo.png" alt="" height="28">
+                <img src="/images/logo.png" alt height="28">
                 
             </a>
             <div class="navbar-burger">
@@ -53,17 +53,15 @@
         
         <div class="navbar-menu navbar-start">
             
-            <a class="navbar-item "
-               href="/archives">Archives</a>
+            <a class="navbar-item " href="/archives">Archives</a>
             
-            <a class="navbar-item "
-               href="/categories/LifeStyle">Lifestyle</a>
+            <a class="navbar-item " href="/categories/LifeStyle">Lifestyle</a>
             
         </div>
         
         <div class="navbar-menu navbar-end">
             
-            <a class="navbar-item search" title="검색" href="javascript:;">
+            <a class="navbar-item search" title="Search" href="javascript:;">
                 <i class="fas fa-search"></i>
             </a>
             
@@ -97,7 +95,7 @@
         <span class="column is-narrow">
             
             
-            3 分钟 소요 (약 513 단어)
+            3 分钟 read (About 513 words)
         </span>
         
     </div>
@@ -122,11 +120,11 @@
 <li>createHashHistory: hashchange</li>
 </ul>
 <h3 id="state-值存储在-sessionStorage-里"><a href="#state-值存储在-sessionStorage-里" class="headerlink" title="state 值存储在 sessionStorage 里"></a>state 值存储在 sessionStorage 里</h3><h2 id="rr4-的实现"><a href="#rr4-的实现" class="headerlink" title="rr4 的实现"></a>rr4 的实现</h2><img src="/2019/04/07/react-router-背后的故事/rrworkflow.png" title="quote from http://www.thisgirlcan.co.uk/activities/rrworkflow.png">
-<p><code>Router</code> 监听 history 的变化，并且通过 <code>state</code> 影响子组件的变化。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.unlisten = props.history.listen(location =&gt; &#123;</span><br><span class="line">  if (this._isMounted) &#123;</span><br><span class="line">    this.setState(&#123; location &#125;);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    this._pendingLocation = location;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><code>Router</code> 监听 history 的变化，并且通过 <code>state</code> 影响子组件的变化。<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.unlisten = props.history.listen(location =&gt; &#123;</span><br><span class="line">  if (this._isMounted) &#123;</span><br><span class="line">    this.setState(&#123; location &#125;);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    this._pendingLocation = location;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <h2 id="路由匹配"><a href="#路由匹配" class="headerlink" title="路由匹配"></a>路由匹配</h2><p>在之前的版本中，在 Route 中写入的 <code>path</code>，在路由匹配时是独一无二的，而 v4 版本则有了一个包含的关系：如匹配 <code>path=&quot;/users&quot;</code> 的路由会匹配  <code>path=&quot;/&quot;</code> 的路由，在页面中这两个模块会同时进行渲染。</p>
 <p>如果只想匹配一个路由的话，则需要 <code>&lt;Switch/&gt;</code> 。v4这个改造与其 <strong>router即组件</strong> 的思路有一定关系， 多个 match 的组件会对一个 url 进行响应，<code>&lt;Switch/&gt;</code> 就是个用户定制的条件。</p>
 <p>在 <code>matchPath</code> 函数中使用了 <code>&quot;path-to-regexp&quot;</code> 来匹配 <code>restful</code> 接口，写法较为优雅。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">const</span> compilePath = <span class="function">(<span class="params">path, options</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> keys = [];</span><br><span class="line">  <span class="keyword">const</span> regexp = pathToRegexp(path, keys, options);</span><br><span class="line">  <span class="keyword">return</span> &#123; regexp, keys &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; regexp, keys &#125; = compilePath(path, &#123;</span><br><span class="line">  end: exact,</span><br><span class="line">  strict,</span><br><span class="line">  sensitive</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> match = regexp.exec(pathname); <span class="comment">// 正则匹配</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!match) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> isExact = pathname === url; <span class="comment">// 是否精准匹配</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// </span></span><br><span class="line"><span class="hljs-keyword">const</span> compilePath = <span class="hljs-function">(<span class="hljs-params">path, options</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> keys = [];</span><br><span class="line">  <span class="hljs-keyword">const</span> regexp = pathToRegexp(path, keys, options);</span><br><span class="line">  <span class="hljs-keyword">return</span> &#123; regexp, keys &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> &#123; regexp, keys &#125; = compilePath(path, &#123;</span><br><span class="line">  end: exact,</span><br><span class="line">  strict,</span><br><span class="line">  sensitive</span><br><span class="line">&#125;);</span><br><span class="line"><span class="hljs-keyword">const</span> match = regexp.exec(pathname); <span class="hljs-comment">// 正则匹配</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> (!match) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> isExact = pathname === url; <span class="hljs-comment">// 是否精准匹配</span></span><br></pre></td></tr></table></figure>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://juejin.im/post/5b797c52e51d4538db349b05" target="_blank" rel="noopener">React-Router底层原理分析与实现</a></li>
 <li><a href="http://zhenhua-lee.github.io/react/history.html" target="_blank" rel="noopener">react-router的实现原理</a></li>
@@ -156,7 +154,7 @@
 
 
 <div class="comments">
-    <h3 class="title is-4">댓글</h3>
+    <h3 class="title is-4">Comments</h3>
     
 <script>
     var disqus_config = function () {
@@ -187,8 +185,7 @@
         <div class="columns content">
             <div class="column is-narrow">
                 <p>  &copy; 2019 totoSalad&nbsp;
-                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                          href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
                 <p>Logo by：<a href="https://www.designevo.com/cn/" title="免费在线logo制作软件">DesignEvo</a>设计制作</p>
             </div>
             <div class="column is-hidden-mobile"></div>
@@ -249,7 +246,7 @@
     <div class="searchbox-mask"></div>
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="아무거나 입력하세요" />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -261,11 +258,11 @@
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: '글',
-                PAGES: '페이지',
-                CATEGORIES: '카테고리 목록',
-                TAGS: '태그 목록',
-                UNTITLED: '(제목없음)',
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
         };

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
 <title>命名规范 - totoSalad&#39;s blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -41,7 +41,7 @@
         <div class="navbar-brand">
             <a class="navbar-item navbar-logo" href="/">
                 
-                <img src="/images/logo.png" alt="" height="28">
+                <img src="/images/logo.png" alt height="28">
                 
             </a>
             <div class="navbar-burger">
@@ -53,17 +53,15 @@
         
         <div class="navbar-menu navbar-start">
             
-            <a class="navbar-item "
-               href="/archives">Archives</a>
+            <a class="navbar-item " href="/archives">Archives</a>
             
-            <a class="navbar-item "
-               href="/categories/LifeStyle">Lifestyle</a>
+            <a class="navbar-item " href="/categories/LifeStyle">Lifestyle</a>
             
         </div>
         
         <div class="navbar-menu navbar-end">
             
-            <a class="navbar-item search" title="검색" href="javascript:;">
+            <a class="navbar-item search" title="Search" href="javascript:;">
                 <i class="fas fa-search"></i>
             </a>
             
@@ -102,7 +100,7 @@
         <span class="column is-narrow">
             
             
-            6 分钟 소요 (약 963 단어)
+            6 分钟 read (About 963 words)
         </span>
         
     </div>
@@ -114,52 +112,52 @@
 <h2 id="通用规范"><a href="#通用规范" class="headerlink" title="通用规范"></a>通用规范</h2><ul>
 <li>函数使用动词/动宾/主动宾结构。避免太短、神秘或者大段注释</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inv</span> (<span class="params">user</span>) </span>&#123; <span class="comment">/* implementation */</span> &#125;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inviteUser</span> (<span class="params">emailAddress</span>) </span>&#123; <span class="comment">/* implementation */</span> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inv</span> (<span class="hljs-params">user</span>) </span>&#123; <span class="hljs-comment">/* implementation */</span> &#125;</span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inviteUser</span> (<span class="hljs-params">emailAddress</span>) </span>&#123; <span class="hljs-comment">/* implementation */</span> &#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>名字需要能表明具体功能，不要过于抽象（比如 type / category）。不必担心过长的变量名，但是也不推荐太长的命名(超过50个字符) </li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elapsed <span class="comment">// bad</span></span><br><span class="line"><span class="keyword">let</span> daysSinceModification <span class="comment">// good</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> type, kind, variant, classification, subcategory  <span class="comment">// bad</span></span><br><span class="line"><span class="keyword">let</span> packagingType, AgeGroup                           <span class="comment">// good</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addDate</span>(<span class="params">date, month</span>) </span>&#123;<span class="comment">// ...&#125; // bad</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addMonthToDate</span>(<span class="params">date, month</span>) </span>&#123;<span class="comment">// ... &#125; // good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> elapsed <span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">let</span> daysSinceModification <span class="hljs-comment">// good</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">let</span> type, kind, variant, classification, subcategory  <span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">let</span> packagingType, AgeGroup                           <span class="hljs-comment">// good</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addDate</span>(<span class="hljs-params">date, month</span>) </span>&#123;<span class="hljs-comment">// ...&#125; // bad</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addMonthToDate</span>(<span class="hljs-params">date, month</span>) </span>&#123;<span class="hljs-comment">// ... &#125; // good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用有意义、可读性好的字符，不要增加额外的、不必要的定语 (不推荐匈牙利命名法)</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> nameString <span class="comment">//bad</span></span><br><span class="line"><span class="keyword">let</span> name       <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> nameString <span class="hljs-comment">//bad</span></span><br><span class="line"><span class="hljs-keyword">let</span> name       <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>除了常用简写其他单词不简写，减少人脑处理的时间</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fName, lName <span class="comment">// bad</span></span><br><span class="line"><span class="keyword">let</span> firstName, lastName <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
-<p><br><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">var</span> locations = [<span class="string">'Austin'</span>, <span class="string">'New York'</span>, <span class="string">'San Francisco'</span>];</span><br><span class="line">locations.forEach(<span class="function">(<span class="params">l</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// l是什么？</span></span><br><span class="line">  dispatch(l);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">var</span> locations = [<span class="string">'Austin'</span>, <span class="string">'New York'</span>, <span class="string">'San Francisco'</span>];</span><br><span class="line">locations.forEach(<span class="function">(<span class="params">location</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  dispatch(location);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> fName, lName <span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">let</span> firstName, lastName <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
+<p><br><br><figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">var</span> locations = [<span class="hljs-string">'Austin'</span>, <span class="hljs-string">'New York'</span>, <span class="hljs-string">'San Francisco'</span>];</span><br><span class="line">locations.forEach(<span class="hljs-function">(<span class="hljs-params">l</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="hljs-comment">// l是什么？</span></span><br><span class="line">  dispatch(l);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line"><span class="hljs-keyword">var</span> locations = [<span class="hljs-string">'Austin'</span>, <span class="hljs-string">'New York'</span>, <span class="hljs-string">'San Francisco'</span>];</span><br><span class="line">locations.forEach(<span class="hljs-function">(<span class="hljs-params">location</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  dispatch(location);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>避免重复描述, 当类/对象名已经有意义时，对其变量进行命名不需要再次重复。</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">var</span> Car = &#123;</span><br><span class="line">  carMake: <span class="string">'Honda'</span>,</span><br><span class="line">  carModel: <span class="string">'Accord'</span>,</span><br><span class="line">  carColor: <span class="string">'Blue'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">var</span> Car = &#123;</span><br><span class="line">  make: <span class="string">'Honda'</span>,</span><br><span class="line">  model: <span class="string">'Accord'</span>,</span><br><span class="line">  color: <span class="string">'Blue'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">var</span> Car = &#123;</span><br><span class="line">  carMake: <span class="hljs-string">'Honda'</span>,</span><br><span class="line">  carModel: <span class="hljs-string">'Accord'</span>,</span><br><span class="line">  carColor: <span class="hljs-string">'Blue'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line"><span class="hljs-keyword">var</span> Car = &#123;</span><br><span class="line">  make: <span class="hljs-string">'Honda'</span>,</span><br><span class="line">  model: <span class="hljs-string">'Accord'</span>,</span><br><span class="line">  color: <span class="hljs-string">'Blue'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>对功能类似的变量名采用统一的命名风格</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">getUserInfo()</span><br><span class="line">getClientData()</span><br><span class="line">getCustomerRecord()</span><br><span class="line"><span class="comment">//good</span></span><br><span class="line">getUser()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line">getUserInfo()</span><br><span class="line">getClientData()</span><br><span class="line">getCustomerRecord()</span><br><span class="line"><span class="hljs-comment">//good</span></span><br><span class="line">getUser()</span><br></pre></td></tr></table></figure>
 <h2 id="命名约定-变量、函数、类"><a href="#命名约定-变量、函数、类" class="headerlink" title="命名约定(变量、函数、类)"></a>命名约定(变量、函数、类)</h2><ul>
 <li>变量，名词，使用小驼峰命名</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> loadingModules <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> loadingModules <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>常量，名词，全部使用大写，多个单词可以用_分割</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> LOADINGMODULES <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> LOADINGMODULES <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>类名，名词，使用大驼峰命名</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Engine</span> </span>&#123;&#125; <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Engine</span> </span>&#123;&#125; <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>函数名，动词、动宾短语，使用小驼峰命名</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hasCommands = <span class="literal">false</span> <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> hasCommands = <span class="hljs-literal">false</span> <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>Promise 对象，动宾短语的进行时</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> loadingData = ajax.get(<span class="string">'url'</span>); <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> loadingData = ajax.get(<span class="hljs-string">'url'</span>); <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>私有属性、变量和方法以下划线 _ 开头</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _loadingModules <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> _loadingModules <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>函数命名拥有固定前缀</li>
 </ul>
@@ -202,7 +200,7 @@
 <ul>
 <li>复数变量加上s</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> userList = [] <span class="comment">// bad</span></span><br><span class="line"><span class="keyword">let</span> users = []    <span class="comment">// good</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> userList = [] <span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-keyword">let</span> users = []    <span class="hljs-comment">// good</span></span><br></pre></td></tr></table></figure>
 <h2 id="文件规范（建议）"><a href="#文件规范（建议）" class="headerlink" title="文件规范（建议）"></a>文件规范（建议）</h2><h3 id="文件名规范"><a href="#文件名规范" class="headerlink" title="文件名规范"></a>文件名规范</h3><blockquote>
 <p>文件导出的内容与文件名保持一致，所见即所得</p>
 </blockquote>
@@ -210,7 +208,7 @@
 <ul>
 <li>文件命名采用帕斯卡命名法(大驼峰)</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">reservation-card.js</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line">ReservationCard.js</span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line">reservation-card.js</span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line">ReservationCard.js</span><br></pre></td></tr></table></figure>
 <ul>
 <li>文件名与导出的组件名保持一致</li>
 </ul>
@@ -218,13 +216,13 @@
 <ul>
 <li>文件命名：with + 功能(名词)</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bad </span></span><br><span class="line">leaveHookHoc.js</span><br><span class="line"><span class="comment">//good</span></span><br><span class="line">withLeaveHook.js</span><br></pre></td></tr></table></figure>
+<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//bad </span></span><br><span class="line">leaveHookHoc.js</span><br><span class="line"><span class="hljs-comment">//good</span></span><br><span class="line">withLeaveHook.js</span><br></pre></td></tr></table></figure>
 <h4 id="markdown-等说明性文件名"><a href="#markdown-等说明性文件名" class="headerlink" title="markdown 等说明性文件名"></a>markdown 等说明性文件名</h4><ul>
-<li>文件命名采用全大写，多个单词使用 <code>_</code> 分割<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">readme.md</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line">README.md</span><br></pre></td></tr></table></figure>
+<li>文件命名采用全大写，多个单词使用 <code>_</code> 分割<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line">readme.md</span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line">README.md</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="函数文件名："><a href="#函数文件名：" class="headerlink" title="函数文件名："></a>函数文件名：</h4><ul>
-<li>文件名与导出的函数名保持一致<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="built_in">escape</span>-test-<span class="keyword">for</span>-browser.js</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line">escapeTextForBrowser.js</span><br></pre></td></tr></table></figure>
+<li>文件名与导出的函数名保持一致<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// bad</span></span><br><span class="line"><span class="hljs-built_in">escape</span>-test-<span class="hljs-keyword">for</span>-browser.js</span><br><span class="line"><span class="hljs-comment">// good</span></span><br><span class="line">escapeTextForBrowser.js</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="文件夹名规范"><a href="#文件夹名规范" class="headerlink" title="文件夹名规范"></a>文件夹名规范</h3><ul>
@@ -259,7 +257,7 @@
 
 
 <div class="comments">
-    <h3 class="title is-4">댓글</h3>
+    <h3 class="title is-4">Comments</h3>
     
 <script>
     var disqus_config = function () {
@@ -290,8 +288,7 @@
         <div class="columns content">
             <div class="column is-narrow">
                 <p>  &copy; 2019 totoSalad&nbsp;
-                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                          href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
                 <p>Logo by：<a href="https://www.designevo.com/cn/" title="免费在线logo制作软件">DesignEvo</a>设计制作</p>
             </div>
             <div class="column is-hidden-mobile"></div>
@@ -352,7 +349,7 @@
     <div class="searchbox-mask"></div>
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="아무거나 입력하세요" />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -364,11 +361,11 @@
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: '글',
-                PAGES: '페이지',
-                CATEGORIES: '카테고리 목록',
-                TAGS: '태그 목록',
-                UNTITLED: '(제목없음)',
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
         };
