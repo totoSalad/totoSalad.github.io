@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>如何优雅使用 hooks - totoSalad&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+
+</head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                <img src="/images/logo.png" alt height="28">
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item " href="/archives">Archives</a>
+            
+            <a class="navbar-item " href="/categories/LifeStyle">Lifestyle</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/totoSalad">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            如何优雅使用 hooks
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-11-28T13:11:59.000Z" itemprop="datePublished">11月 28 2019</time>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            15 分钟 read (About 2275 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <p>使用了 hooks 一小段时间，时常有非预期的bug，还要小心翼翼担心重复渲染导致的性能瓶颈，令人头发稀少，十分抓狂。本文从函数式组件、性能问题等角度解除大家的疑惑，放心玩耍~<br><a id="more"></a></p>
+<p><img src="https://pic4.zhimg.com/v2-fbb866c98bd27c5a44cad02f4eeb0f1c_1200x500.jpg" alt="image"></p>
+<h2 id="我们不一样！函数式组件与-class-组件"><a href="#我们不一样！函数式组件与-class-组件" class="headerlink" title="我们不一样！函数式组件与 class 组件"></a>我们不一样！函数式组件与 class 组件</h2><p>首先不得不提 hooks 依附的函数式组件。<br>两者有什么不同呢？class 组件具体更多的feature，比如生命周期、state。function 组件因为少了这些生命周期会渲染地更快。<br>然而这些都不是最大的区别，Dan 认为是:</p>
+<blockquote>
+<p><strong>Function components capture the rendered values.</strong></p>
+</blockquote>
+<p>直接翻译是 <strong>function 捕捉的是渲染的值</strong>，说着抽象，show me some code。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// function 实现的 ProfilePage</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ProfilePage</span>(<span class="hljs-params">props</span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> showMessage = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    alert(<span class="hljs-string">'Followed '</span> + props.user);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">const</span> handleClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    setTimeout(showMessage, <span class="hljs-number">3000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> (</span><br><span class="line">    &lt;button onClick=&#123;handleClick&#125;&gt;Follow&lt;<span class="hljs-regexp">/button&gt;</span></span><br><span class="line"><span class="hljs-regexp">  );</span></span><br><span class="line"><span class="hljs-regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// class 实现的 ProfilePage</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProfilePage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;</span><br><span class="line">  showMessage = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    alert(<span class="hljs-string">'Followed '</span> + <span class="hljs-keyword">this</span>.props.user);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  handleClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="hljs-keyword">this</span>.showMessage, <span class="hljs-number">3000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> &lt;button onClick=&#123;this.handleClick&#125;&gt;Follow&lt;/button&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">zai</span><br></pre></td></tr></table></figure>
+<p>两个组件似乎只是同一功能的两种实现，看似没有区别，<a href="https://codesandbox.io/s/pjqnl16lm7" target="_blank" rel="noopener">live demo</a></p>
+<p>执行操作：</p>
+<ol>
+<li>选择 profile 为 dan</li>
+<li>点击 follow (function) / follow (class)</li>
+<li>修改 profile 为 sophie</li>
+</ol>
+<p>两个组件 alter 的内容竟然不一致！function 的行为是正确的，user 依旧是点击时的 Dan。而 class 组件因为 <code>this.props</code> 是动态变化的，所以获得了更新后的值。</p>
+<p>如果希望 class 的行为表现一致的话，则应该按以下的方式实现:</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 行为一致的 class 组件实现</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProfilePage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="hljs-comment">// Capture the props!</span></span><br><span class="line">    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Note: we are *inside render*.</span></span><br><span class="line">    <span class="hljs-comment">// These aren't class methods.</span></span><br><span class="line">    <span class="hljs-keyword">const</span> showMessage = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">      alert(<span class="hljs-string">'Followed '</span> + props.user);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">const</span> handleClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">      setTimeout(showMessage, <span class="hljs-number">3000</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> &lt;button onClick=&#123;handleClick&#125;&gt;Follow&lt;/button&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们可以很好的理解 <strong>function 捕捉的是渲染的值</strong> 了吧~ </p>
+<p>如果希望 function 组件获取最新的 state，不与具体渲染有关。我们也可以借助 useRef hooks 实现类似 <strong>instance field</strong> 的效果</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// function 实现的 ProfilePage</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ProfilePage</span>(<span class="hljs-params">props</span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> user = useRef(props.user)</span><br><span class="line">  </span><br><span class="line">  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    user.current = props.user</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">const</span> showMessage = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    alert(<span class="hljs-string">'Followed '</span> + user.current);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">const</span> handleClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    setTimeout(showMessage, <span class="hljs-number">3000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> (</span><br><span class="line">    &lt;button onClick=&#123;handleClick&#125;&gt;Follow&lt;<span class="hljs-regexp">/button&gt;</span></span><br><span class="line"><span class="hljs-regexp">  );</span></span><br><span class="line"><span class="hljs-regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="令人恐惧？函数式组件的重复渲染"><a href="#令人恐惧？函数式组件的重复渲染" class="headerlink" title="令人恐惧？函数式组件的重复渲染"></a>令人恐惧？函数式组件的重复渲染</h2><p>函数组件还有一个特别让人紧张的特性，组件 update 阶段时函数组件会重新执行，函数组件内部的变量、方法均会重新生成。</p>
+<h3 id="Impedance-Mismatch-（阻碍不匹配）问题处理"><a href="#Impedance-Mismatch-（阻碍不匹配）问题处理" class="headerlink" title="Impedance Mismatch （阻碍不匹配）问题处理"></a>Impedance Mismatch （阻碍不匹配）问题处理</h3><p>setInterval API 在 react 中使用属于一个典型的阻碍不匹配。两者在描述状态变化方便有很大的差异。</p>
+<ul>
+<li><p>react 渲染结果与变化的状态保持一致</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 描述每次渲染</span><br><span class="line">return &lt;h1&gt;&#123;delay&#125;&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>setInterval 无法同步状态变化，只能清除重建</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// delay 发生变化</span><br><span class="line">setInterval(tick, delay);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>所以在 <code>react</code> 中使用 <code>setInterval</code>，并且 <code>delay</code> 发生变化。class 的处理非常复杂，需要手动反复挂载 <code>setInterval</code> 事件。完整对比，<a href="https://overreacted.io/zh-hans/making-setinterval-declarative-with-react-hooks" target="_blank" rel="noopener">请点击</a></p>
+<p><img src="/Users/cukunbu/Library/Application Support/typora-user-images/image-20190804111610723.png" alt="image-20190804111610723"></p>
+<p>而 hooks 因为函数式组件会重新执行，则不需要手动挂载。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Counter</span>(<span class="hljs-params">props</span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>);</span><br><span class="line">  <span class="hljs-keyword">const</span> savedCallback = useRef();</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 每次更新组件，callback 重新生成，与不同的 count 绑定。</span></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">    setCount(count + <span class="hljs-number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 每次更新时同步 callback 函数，避免 stale state 问题。</span></span><br><span class="line">  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    savedCallback.current = callback;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// delay 更新时，更新 setInterval 函数。</span></span><br><span class="line">  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tick</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">      savedCallback.current();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">let</span> id = setInterval(tick, <span class="hljs-number">1000</span>);</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> clearInterval(id); <span class="hljs-comment">// componentDidUpdate 与 unmount 的情况下销毁现有 interval.</span></span><br><span class="line">  &#125;, [props.delay]);</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>值得注意的是每次组件更新时 <code>callback</code> 需要重新挂载。因为 <code>callback</code> 函数与 <code>count</code> 之间形成了闭包关系，每次组件更新时 <code>callback</code> 都会重新生成，与最新的 <code>count</code> 绑定。</p>
+</blockquote>
+<p>在 setInterval 的场景下，因为 hooks 的组件更新则函数更新的行为，不需要做手动同步，更加自然。</p>
+<h3 id="直面性能恐惧"><a href="#直面性能恐惧" class="headerlink" title="直面性能恐惧"></a>直面性能恐惧</h3><p>让我们来面对我们最担心的性能问题，最大的疑惑主要集中在两方面：</p>
+<ol>
+<li>在渲染时创建函数会影响性能？</li>
+</ol>
+<p>在现代浏览器中，闭包和类的原始性能只有在极端场景下才会有明显的差别。反倒因为 hooks 基于 <code>function component</code> 减少了很多 class component 的开支。</p>
+<ol start="2">
+<li>子组件无关渲染如何解决？</li>
+</ol>
+<p>如下例子：<code>handleClick</code> 函数表现的类似 class 组件中的 inline 函数。</p>
+<p>如果 <code>handleClick</code> 属性发生变化，子组件 <code>&lt;Button&gt;</code> 即便使用了 <code>React.memo</code> （类似 pureComponent）也得被迫更新，最终整个组件树发生了更新。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> [isOn, setIsOn] = useState(<span class="hljs-literal">false</span>);</span><br><span class="line">  <span class="hljs-keyword">const</span> handleClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> setIsOn(!isOn);  <span class="hljs-comment">// 每次渲染，重新生成 handleClick</span></span><br><span class="line">  <span class="hljs-keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="hljs-string">"App"</span>&gt;</span><br><span class="line">      &lt;h1&gt;&#123;isOn ? <span class="hljs-string">"On"</span> : <span class="hljs-string">"Off"</span>&#125;&lt;<span class="hljs-regexp">/h1&gt;</span></span><br><span class="line"><span class="hljs-regexp">      &lt;Button handleClick=&#123;handleClick&#125; /</span>&gt; </span><br><span class="line">      <span class="hljs-comment">// button 因为属性不一样一定会重新渲染</span></span><br><span class="line">    &lt;<span class="hljs-regexp">/div&gt;</span></span><br><span class="line"><span class="hljs-regexp">  );</span></span><br><span class="line"><span class="hljs-regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>如何解决</strong></p>
+<ol>
+<li>useCallback 与 React.memo<br><code>useCallback</code> 指定 depends，可以避免多余渲染。 </li>
+</ol>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const handleClick = callBack(() =&gt; setIsOn(isOn =&gt; !isOn), []);  </span><br><span class="line">// 组件 rerender 时，函数不会再次生成</span><br></pre></td></tr></table></figure>
+<p>但是对所有的函数使用 <code>useCallback</code> 记住旧值，绝对不是一个最佳实践。因为 <code>useCallback</code> 本质是一个 memorized 函数，空间换效率，使用过多反倒会造成内存泄漏等问题。<br>其次如果 <code>useCallback</code> 有遗漏的依赖项会出现 stale data 的情况。会在下一章详细介绍。</p>
+<ol start="2">
+<li>useReducer<br><code>useReducer</code> 产生的 <code>dispatch</code> 不会发生变化，方便处理深层更新。<a href="https://github.com/facebook/react/issues/14099" target="_blank" rel="noopener">相关 issue</a></li>
+</ol>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> TodosDispatch = React.createContext(<span class="hljs-literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TodosApp</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">  <span class="hljs-comment">// 提示：`dispatch` 不会在重新渲染之间变化</span></span><br><span class="line">  <span class="hljs-keyword">const</span> [todos, dispatch] = useReducer(todosReducer);</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> (</span><br><span class="line">    &lt;TodosDispatch.Provider value=&#123;dispatch&#125;&gt;</span><br><span class="line">      &lt;DeepTree todos=&#123;todos&#125; /&gt;</span><br><span class="line">    &lt;<span class="hljs-regexp">/TodosDispatch.Provider&gt;</span></span><br><span class="line"><span class="hljs-regexp">  );</span></span><br><span class="line"><span class="hljs-regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果对性能还有疑问请看 <a href="https://zh-hans.reactjs.org/docs/hooks-faq.html#are-hooks-slow-because-of-creating-functions-in-render" target="_blank" rel="noopener">react hooks faq</a></p>
+<h2 id="hooks-使用"><a href="#hooks-使用" class="headerlink" title="hooks 使用"></a>hooks 使用</h2><h4 id="instance-field"><a href="#instance-field" class="headerlink" title="instance field"></a>instance field</h4><p>在函数式组件中所有的变量、方法都会在更新时重新赋值，如果期望实现 <code>this</code> (instance field)，useRef 可以实现。</p>
+<blockquote>
+<p>useRef 也可以处理 element ref 的情况。</p>
+</blockquote>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 将 count 绑定在 this 上</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">AutoCount</span>(<span class="hljs-params">props</span>) </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> count = useRef(<span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 无需更新的 increase 函数，但是 count 值是最新的</span></span><br><span class="line">  <span class="hljs-keyword">const</span> increase = callback(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;</span><br><span class="line">		count.current = count.current++</span><br><span class="line">  &#125;, [])</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> (</span><br><span class="line">    &lt;p&gt;&#123;count&#125;&lt;<span class="hljs-regexp">/p&gt;</span></span><br><span class="line"><span class="hljs-regexp">    &lt;Button onClick=&#123;increase&#125;&gt;increaee&lt;/</span>Button&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="stale-closures-陷阱"><a href="#stale-closures-陷阱" class="headerlink" title="stale closures 陷阱"></a>stale closures 陷阱</h4><p>useCallback / useMemo 不是万能的，使用时很容易与 stale state (旧state) 绑定，我们称之为 stale closures 陷阱。</p>
+<p><code>useCallback</code> 内部会形成闭包，如果依赖项（第二个参数）不更新， <code>useCallback</code> 的闭包也不会更新，最终函数可能执行永远得不到我们期望的结果。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> [isOn, setIsOn] = useState(<span class="hljs-literal">false</span>);</span><br><span class="line"><span class="hljs-comment">// 错误写法！</span></span><br><span class="line"><span class="hljs-comment">// 因为 dependence 是 [], 组件 rerender 时，callback 函数不会更新</span></span><br><span class="line"><span class="hljs-comment">// 闭包不更新，isOn 也永远是 false</span></span><br><span class="line"><span class="hljs-keyword">const</span> handleClick = callBack(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> setIsOn(!isOn), []);</span><br></pre></td></tr></table></figure>
+<p>可以把闭包值作为 <code>callback</code> 依赖项，在需要时更新闭包。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 正确写法 1</span></span><br><span class="line"><span class="hljs-keyword">const</span> handleClick = callBack(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> setIsOn(!isOn), [isOn]);</span><br></pre></td></tr></table></figure>
+<p>也可以利用 useState 的另一种用法，避开使用闭包值。</p>
+<figure class="highlight jsx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 正确写法 2</span></span><br><span class="line"><span class="hljs-keyword">const</span> handleClick = callBack(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> setIsOn(<span class="hljs-function"><span class="hljs-params">isOn</span> =&gt;</span> !isOn), []);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>eslint-plugin-react-hooks 会校验 useCallback / useEffect 的 dependence  <a href="https://github.com/facebook/react/issues/14920" target="_blank" rel="noopener">https://github.com/facebook/react/issues/14920</a></p>
+</blockquote>
+<h4 id="其他注意点"><a href="#其他注意点" class="headerlink" title="其他注意点"></a>其他注意点</h4><ul>
+<li><p><code>const [arr, setArr] = useState()</code> 的 <code>setArr</code> 需要返回一个全新的数组否则组件不会发生更新，应该是 hooks 内部做了优化会做一层浅比较。</p>
+</li>
+<li><p>使用 <code>useReducer</code> 时，reducer 不能放在自定义 hooks 内部，否则 action 会触发多次.<a href="https://stackoverflow.com/questions/54892403/usereducer-action-dispatched-twice?answertab=oldest#tab-top" target="_blank" rel="noopener">相关segmentfault</a>   </p>
+</li>
+</ul>
+<p><strong>错误写法</strong></p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useReducer &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export function useApiCallReducer() &#123;</span><br><span class="line">  // 因为放在函数内部，useApiCallReducer 执行时 reducer 就会更新</span><br><span class="line">  function reducer(state, action) &#123;</span><br><span class="line">   switch (action.type) &#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return useReducer(reducer, initialState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>正确写法</strong></p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useReducer &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">// 放在函数外部，reducer 保持不变</span><br><span class="line">function reducer(state, action) &#123;</span><br><span class="line"> switch (action.type) &#123;</span><br><span class="line">   ...</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>react hooks 在 react 内部实现了组件逻辑复用，避免了相关逻辑被生命周期割裂的情况。但是 hooks 依附函数式组件，更新方式与我们常用的 class 组件不一样。<br>我们可以不需要担心函数式组件更新时需要重新初始化函数，会影响性能。在必要时可以采用 <code>useCallback</code> + <code>React.memo</code> / <code>useReducer</code>。但是还是那句老话，过早优化是万恶之源。<br>同时 hooks 也带来了新的问题，instance 使用 、stale data 、除此之外 hooks 内部做了很多所谓的优化，导致了在实践中有很多坑。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>业界目前木有 hooks 最佳实践，本文不敢夸口最佳实践，只是给出 hooks 使用的注意点，希望能帮助大家优雅使用 hooks ~ 在使用中遇到问题可以在 <a href="http://git.caimi-inc.com/huluman/doc/issues/73" target="_blank" rel="noopener">相关链接</a> 记录。</p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><ul>
+<li><a href="https://overreacted.io/how-are-function-components-different-from-classes/" target="_blank" rel="noopener">how-are-function-components-different-from-classes</a></li>
+<li><a href="https://medium.com/@as790726/%E5%A6%82%E4%BD%95%E9%8C%AF%E8%AA%A4%E5%9C%B0%E4%BD%BF%E7%94%A8-react-hooks-usecallback-%E4%BE%86%E4%BF%9D%E5%AD%98%E7%9B%B8%E5%90%8C%E7%9A%84-function-instance-7744984bb0a6" target="_blank" rel="noopener">如何錯誤地使用-react-hooks-usecallback-來保存相同的-function-instance</a></li>
+<li><a href="https://haacked.com/archive/2004/06/15/impedance-mismatch.aspx/" target="_blank" rel="noopener">阻碍不匹配</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/hooks/">#hooks</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2019/07/14/浏览器原理/">浏览器原理</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2019/11/28/如何优雅使用-hooks/';
+        this.page.identifier = '2019/11/28/如何优雅使用-hooks/';
+        
+        this.language = 'zh';
+        
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'chats' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow">
+                <p>  &copy; 2019 totoSalad&nbsp;
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a></p>
+                <p>Logo by：<a href="https://www.designevo.com/cn/" title="免费在线logo制作软件">DesignEvo</a>设计制作</p>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/totoSalad">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+
+<script src="/js/script.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+</body>
+</html>
